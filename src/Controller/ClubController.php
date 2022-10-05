@@ -6,6 +6,8 @@ use Symfony\Component\HttpFoundation\Request ;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use App\Repository\ClubRepository;
+use App\Repository\StudentRepository ;
 
 class ClubController extends AbstractController
 {
@@ -40,5 +42,18 @@ class ClubController extends AbstractController
             $value = $request->query->get('value');
             return $this->render('club/detail.html.twig',['value' => $value]);;
         }
+        #[Route('/clubs', name: 'app_club')]
+public function listClub(ClubRepository $repository){
+$clubs=$repository->findall();
+return $this->render("club/listClub.html.twig",array("tabClub"=>$clubs));
+}
+#[Route('/student', name: 'app_student')]
+public function listStudent(StudentRepository $repository){
+$clubs=$repository->findall();
+return $this->render("club/listStudent.html.twig",array("tabstudent"=>$students));
+}
+
+
+
 
     }
