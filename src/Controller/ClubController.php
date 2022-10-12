@@ -49,7 +49,7 @@ return $this->render("club/listClub.html.twig",array("tabClub"=>$clubs));
 }
 #[Route('/student', name: 'app_student')]
 public function listStudent(StudentRepository $repository){
-$clubs=$repository->findall();
+$students=$repository->findall();
 return $this->render("club/listStudent.html.twig",array("tabstudent"=>$students));
 }
 
