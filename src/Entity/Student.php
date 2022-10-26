@@ -10,9 +10,9 @@ class Student
 {
     #[ORM\Id]
     #[ORM\Column]
-    private ?int $num = null;
+    private ?int $nce = null;
 
-    #[ORM\Column(length: 255)]
+    #[ORM\Column(length: 50)]
     private ?string $username = null;
 
     #[ORM\Column]
@@ -21,17 +21,24 @@ class Student
     #[ORM\ManyToOne(inversedBy: 'students')]
     #[ORM\JoinColumn(onDelete: "CASCADE")]
     private ?Classroom $classroom = null;
+   
 
-  
-
-    public function getnum(): ?int
+    public function getNce(): ?int
     {
-        return $this->num;
+        return $this->nce;
     }
+
 
     public function getUsername(): ?string
     {
         return $this->username;
+    }
+
+    public function setNce(int $nce): self
+    {
+        $this->nce = $nce;
+
+        return $this;
     }
 
     public function setUsername(string $username): self
@@ -65,6 +72,11 @@ class Student
         return $this;
     }
 
-
+   
+    public function __toString()
+    {
+        return(string)$this->getUsername();
+    }
+    
    
 }

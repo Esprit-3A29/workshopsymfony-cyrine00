@@ -1,16 +1,16 @@
 <?php
 
 namespace App\Controller;
+
 use App\Entity\Classroom;
-use App\Form\ClassroomFormType;
+use App\Form\ClassroomType;
+use App\Repository\ClassroomRepository;
+use Doctrine\Persistence\ManagerRegistry;
+use Symfony\Bridge\Doctrine\Form\Type\DoctrineType;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use App\Repository\ClassroomRepository ;
-use Doctrine\Persistence\ManagerRegistry;
-use Symfony\Component\HttpFoundation\Request;
-
-
 
 class ClassroomController extends AbstractController
 {
@@ -20,23 +20,37 @@ class ClassroomController extends AbstractController
         return $this->render('classroom/index.html.twig', [
             'controller_name' => 'ClassroomController',
         ]);
+
+        
     }
 
-    #[Route('/listClassroom', name: 'list_classroom')]
-    public function listClassroom(ClassroomRepository $repository)
+    #[Route('/listclassroom', name: 'list_classroom')]
+    public function listclassroom(classroomRepository $repository)
     {
-        $classroom= $repository->findAll();
-       // $students= $this->getDoctrine()->getRepository(StudentRepository::class)->findAll();
-       return $this->render("classroom/list.html.twig",array("tabClassroom"=>$classroom));
+        $classrooms= $repository->findAll();
+       // $classrooms= $this->getDoctrine()->getRepository(classroomRepository::class)->findAll();
+       return $this->render("classroom/list.html.twig",array("tabclassroom"=>$classrooms));
     }
 
 
-  
+    #[Route('/addclassroom', name: 'add_classroom')]
+    public function addclassroom(ManagerRegistry $doctrine)
+    {
+        $classroom= new classroom();
+        $classroom->setName("rahma");
+        $classroom->setDescription("okay");
+       // $em=$this->getDoctrine()->getManager();
+        $em= $doctrine->getManager();
+        $em->persist($classroom);
+        $em->flush();
+        return $this->redirectToRoute("list_classroom");
+    }
+
     #[Route('/addForm', name: 'add2')]
-    public function addClassroom(ManagerRegistry $doctrine,Request $request)
+    public function addForm(ManagerRegistry $doctrine,Request $request)
     {
-        $classroom= new Classroom();
-        $form= $this->createForm(ClassroomFormType::class,$classroom);
+        $classroom= new classroom;
+        $form= $this->createForm(classroomType::class,$classroom);
         $form->handleRequest($request) ;
         if ($form->isSubmitted()){
              $em= $doctrine->getManager();
@@ -44,35 +58,31 @@ class ClassroomController extends AbstractController
              $em->flush();
              return  $this->redirectToRoute("list_classroom");
          }
-        return $this->renderForm("classroom/add.html.twig",array("formClassroom"=>$form));
+        return $this->renderForm("classroom/add.html.twig",array("formclassroom"=>$form));
     }
 
     #[Route('/updateForm/{id}', name: 'update')]
-    public function  updateForm($id,ClassroomRepository $repository,ManagerRegistry $doctrine,Request $request)
+    public function  updateForm($id,classroomRepository $repository,ManagerRegistry $doctrine,Request $request)
     {
         $classroom= $repository->find($id);
-        $form= $this->createForm(ClassroomFormType::class,$classroom);
-        $form->handleRequest($request) ;
+        $form= $this->createForm(classroomType::class,$classroom);
+        $form->handleRequest($request);
         if ($form->isSubmitted()){
             $em= $doctrine->getManager();
             $em->flush();
             return  $this->redirectToRoute("list_classroom");
         }
-        return $this->renderForm("classroom/update.html.twig",array("formClassroom"=>$form));
+        return $this->renderForm("classroom/update.html.twig",array("formclassroom"=>$form));
     }
 
-    #[Route('/removeForm/{id}', name: 'remove')]
+    #[Route('/removeForm/{id}', name:'remove')]
 
-    public function removeClassroom(ManagerRegistry $doctrine,$id,ClassroomRepository $repository)
+    public function removeclassroom(ManagerRegistry $doctrine,$id,classroomRepository $repository)
     {
         $classroom= $repository->find($id);
-        $em = $doctrine->getManager();
+        $em=$doctrine->getManager();
         $em->remove($classroom);
         $em->flush();
         return  $this->redirectToRoute("list_classroom");
     }
-
-
-
-   
 }

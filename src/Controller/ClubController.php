@@ -2,12 +2,12 @@
 
 namespace App\Controller;
 
+use App\Repository\StudentRepository;
+use App\Repository\ClubRepository;
 use Symfony\Component\HttpFoundation\Request ;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use App\Repository\ClubRepository;
-use App\Repository\StudentRepository ;
 
 class ClubController extends AbstractController
 {
@@ -42,18 +42,16 @@ class ClubController extends AbstractController
             $value = $request->query->get('value');
             return $this->render('club/detail.html.twig',['value' => $value]);;
         }
+
         #[Route('/clubs', name: 'app_club')]
-public function listClub(ClubRepository $repository){
-$clubs=$repository->findall();
-return $this->render("club/listClub.html.twig",array("tabClub"=>$clubs));
-}
-#[Route('/student', name: 'app_student')]
-public function listStudent(StudentRepository $repository){
-$students=$repository->findall();
-return $this->render("club/listStudent.html.twig",array("tabstudent"=>$students));
-}
-
-
-
+        public function listClub(ClubRepository $repository){
+            $clubs=$repository->findAll();
+            return $this->render("club/list.Club.html.twig",array("tabClub"=>$clubs));      }
+  
+         #[Route('/students', name: 'app_student')]
+            public function listStudent(StudentRepository $repository){
+                $students=$repository->findAll();
+                return $this->render("club/listStudent.html.twig",array("tabStudent"=>$students));      }
+      
 
     }

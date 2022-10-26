@@ -15,16 +15,15 @@ class Classroom
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\Column(length: 255)]
-    private ?string $name = null;
+    #[ORM\Column(length: 20)]
+    private ?string $Name = null;
 
-    #[ORM\Column(length: 255)]
-    private ?string $description = null;
+    #[ORM\Column(length: 30)]
+    private ?string $Description = null;
 
     #[ORM\OneToMany(mappedBy: 'classroom', targetEntity: student::class)]
     private Collection $students;
 
-  
 
 
     public function __construct()
@@ -40,24 +39,24 @@ class Classroom
 
     public function getName(): ?string
     {
-        return $this->name;
+        return $this->Name;
     }
 
-    public function setName(string $name): self
+    public function setName(string $Name): self
     {
-        $this->name = $name;
+        $this->Name = $Name;
 
         return $this;
     }
 
     public function getDescription(): ?string
     {
-        return $this->description;
+        return $this->Description;
     }
 
-    public function setDescription(string $description): self
+    public function setDescription(string $Description): self
     {
-        $this->description = $description;
+        $this->Description = $Description;
 
         return $this;
     }
@@ -91,12 +90,10 @@ class Classroom
 
         return $this;
     }
-    
     public function __toString()
     {
         return(string)$this->getName();
     }
-
-
- 
+    
+   
 }
